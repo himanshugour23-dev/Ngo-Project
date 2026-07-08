@@ -60,13 +60,6 @@ const STORIES = [
   },
 ];
 
-const STATS: [string, string][] = [
-  ["48+", "Verified NGOs"],
-  ["320+", "Active volunteers"],
-  ["1,200+", "Lives impacted"],
-  ["94%", "Tasks completed"],
-];
-
 const STEPS = [
   {
     n: "01",
@@ -197,7 +190,7 @@ export default function HomePage() {
               ))}
             </div>
             <div className="text-[0.83rem] text-[#6b7e6d] leading-[1.4]">
-              <strong className="text-[#1c2b1e]">320+ volunteers</strong> already making impact
+              <strong className="text-[#1c2b1e]"></strong> already making impact
               <br className="hidden sm:block" /> across Indore and nearby cities
             </div>
           </div>
@@ -229,7 +222,7 @@ export default function HomePage() {
                 </div>
               ))}
             </div>
-            <div className="text-[0.8rem] sm:text-[0.83rem] font-bold text-[#1c2b1e]">12 volunteers joined</div>
+            <div className="text-[0.8rem] sm:text-[0.83rem] font-bold text-[#1c2b1e]"></div>
             <div className="text-xs text-[#8a9e8c] mt-0.5">Flood relief · Ralamandal</div>
           </div>
 
@@ -244,23 +237,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* ── Stats bar ── */}
-      <div className="bg-[#1b4332] px-5 sm:px-10 py-8 sm:py-10">
-        <div className="max-w-[1160px] mx-auto grid grid-cols-2 sm:grid-cols-4 gap-y-6 gap-x-2">
-          {STATS.map(([val, lbl], i) => (
-            <div
-              key={i}
-              className={`text-center px-2 sm:px-5 ${i < 3 ? "sm:border-r sm:border-white/[0.12]" : ""}`}
-            >
-              <div className="font-['Playfair_Display',serif] text-[1.9rem] sm:text-[2.5rem] font-bold text-white mb-1">
-                {val}
-              </div>
-              <div className="text-[0.78rem] sm:text-[0.83rem] text-white/60 font-medium">{lbl}</div>
-            </div>
-          ))}
-        </div>
-      </div>
 
       {/* ── How it works ── */}
       <div id="how" className="bg-white px-5 sm:px-10 py-16 sm:py-20">

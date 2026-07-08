@@ -13,11 +13,14 @@ export async function POST(req : NextRequest){
         const session = await auth.api.getSession({
             headers : await headers(),
         });
+        console.log("sesson found")
         if(!session) return NextResponse.json({error: "Unauthorized"}, {status: 401});
         if(session.user.emailVerified === false) return NextResponse.json({error: "Email not verified"}, {status: 401});
         if ((session.user as { isBanned?: boolean }).isBanned) return NextResponse.json({error: "You are banned"}, {status: 401});
         const body = await req.json();
+        console.log("Body Found", body)
         const validatedData = applySchema.parse(body);
+        console.log("Validated Data", validatedData)
         const need = await prisma.communityNeeds.findUnique({
             where : {
                 id : validatedData.needId, 
@@ -36,9 +39,11 @@ export async function POST(req : NextRequest){
                 },
             },
         }) ;       
+        console.log("Existing User Check", existingUser)
         if(existingUser){
             return NextResponse.json({error: "You are already assigned to a task and or may be applied once wait for 2 days if no approval comes or Complete the Task you've been provided first"}, {status: 400});
         }
+        console.log("Checking if user has already applied for this need")
         const alreadyApplied = await prisma.taskAssignment.findUnique({
         where: {
           needId_assignedToUserId: {
@@ -51,6 +56,7 @@ export async function POST(req : NextRequest){
         {message : "You have already applied for this need"},
         {status : 400}
       ) ; 
+      console.log("Creating Assignment")
     const assignment = await prisma.taskAssignment.create({
         data : {
             needId : validatedData.needId,
@@ -63,8 +69,11 @@ export async function POST(req : NextRequest){
     console.log("Assignment Created Successfully", assignment) ;
     return NextResponse.json({message : "Applied Successfully"});
     }
-    catch(err){
-        console.log("There is some error While applying for need") ; 
-        return NextResponse.json({error : "There is some error While applying for need"}) ; 
-    }
+    catch (err) {
+    console.error(err);
+    return NextResponse.json({
+            error: err instanceof Error ? err.message : "Unknown Error",
+        },
+        { status: 500,});
+}
 }

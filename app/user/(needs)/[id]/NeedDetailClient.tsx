@@ -206,6 +206,8 @@ function ApplyButton({ needId }: { needId: string }) {
     try {
       const res = await fetch(`/api/communityNeeds/${needId}/apply`, {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ needId }),
       });
       const data = await res.json();
 

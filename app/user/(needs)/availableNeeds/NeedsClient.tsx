@@ -42,7 +42,6 @@ const CATEGORY_LABELS: Record<string, string> = {
   artsAndCulture: "Arts & Culture", humanRights: "Human Rights", other: "Other",
 };
 
-// ── Mini image slider used inside each card ───────────────────────────────
 function CardSlider({ images, alt }: { images: string[]; alt: string }) {
   const [idx, setIdx] = useState(0);
   const imgs = images.length > 0 ? images : [];
