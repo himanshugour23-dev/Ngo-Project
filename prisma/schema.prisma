@@ -1,0 +1,204 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" 
+}
+
+model User {
+  id                  String           @id
+  name                String
+  email               String           @unique
+  emailVerified       Boolean          @default(false)
+  image               String?
+  taskCompleted       Int              @default(0)
+  city                String           @default("Indore")
+  latitude            Float?
+  longitude           Float?
+  skills              String[]
+  rating              Float            @default(0)
+  ratingCount     Int           @default(0)  
+  isActive            Boolean          @default(false)
+  role                userRole         @default(volunteer)
+  bio                   String?           
+  preferredCategories String[]
+  isBanned            Boolean          @default(false)
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+  assignedTasks       TaskAssignment[]
+  sessions            Session[]
+  accounts            Account[]
+  storedRating VolunteerRating[]
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId])                    // join from user → accounts
+}
+
+model Session {
+  id           String   @id
+  expiresAt    DateTime
+  token        String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  ipAddress    String?
+  userAgent    String?
+  userId       String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId])                    // Better Auth looks up sessions by userId
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Ngo {
+  id                      String           @id @default(uuid())
+  ngoName                 String
+  type                    Types
+  city                    String           @default("Indore")
+  latitude                Float?
+  longitude               Float?
+  eightyGNumber           String?
+  twelveGNumber           String?
+  motto                 String                                         
+  email                  String           @unique
+  isEmailVerified    Boolean       @default(false)
+  password               String
+  Address                 String
+  yearOfEstablishment     DateTime
+  registrationCertificate String
+  createdAt               DateTime         @default(now())
+  updatedAt               DateTime         @updatedAt
+  isVerified              Boolean          @default(false)
+  communityNeeds          CommunityNeeds[]
+  ratingGiven   VolunteerRating[]
+}
+
+model CommunityNeeds {
+  id                 String           @id @default(uuid())
+  ngoId              String
+  ProblemDescription String
+  ProblemCategory    category
+  peopleAffected  Int?
+  maxAffectedPeople Int?
+  hasDeadline     Boolean @default(false) 
+  deadLine          DateTime?
+  location           String
+  latitude           Float?
+  longitude          Float?
+  urgencyLevel       Int
+  status             Status           @default(pending)
+  voulenteersWorking Int
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  images             String[]
+  isAcceptingInvites Boolean @default(true) 
+  maxVolunteers      Int              @default(1)
+  ngo                Ngo              @relation(fields: [ngoId], references: [id])
+  TaskGivenTo        TaskAssignment[]
+@@index([ngoId])                     // "get all needs for this NGO"
+@@index([status])                    // filtering pending/inProgress/resolved
+@@index([ProblemCategory])           // category-based browsing
+@@index([urgencyLevel])              // sorting by urgency
+@@index([ngoId, status])             // "this NGO's open needs"
+}
+
+model TaskAssignment {
+  assignmentId     String         @id @default(uuid())
+  needId           String
+  status           Status         @default(pending)
+  assignedToUserId String
+  assignedAt       DateTime       @default(now())
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  completedAt      DateTime?
+  user             User           @relation(fields: [assignedToUserId], references: [id])
+  need             CommunityNeeds @relation(fields: [needId], references: [id])
+  requestType      RequestType    @default(volunteer)
+  approvalStatus   ApprovalStatus @default(pending)
+  @@unique([needId, assignedToUserId])
+  ratingFromAssignment VolunteerRating?
+  @@index([assignedToUserId])         
+@@index([needId])                    
+@@index([approvalStatus])     
+@@index([assignedToUserId, approvalStatus])  
+}
+
+model VolunteerRating{
+  id  String @id @default(uuid())
+  ngoId String   
+  assignmentId String @unique  
+  volunteerId String 
+  rating Int 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ngo Ngo @relation(fields: [ngoId], references: [id]) 
+  taskAssignment TaskAssignment @relation(fields: [assignmentId], references: [assignmentId])
+  volunteer User @relation(fields: [volunteerId], references: [id])
+  @@index([volunteerId])               // "get all ratings for this volunteer"
+@@index([ngoId])                     // "ratings given by this NGO"
+}
+
+enum category {
+  education
+  health
+  environment
+  animalWelfare
+  disasterRelief
+  povertyAlleviation
+  communityDevelopment
+  artsAndCulture
+  humanRights
+  other
+}
+
+enum Status {
+  pending
+  inProgress
+  resolved
+}
+
+enum userRole {
+  admin
+  volunteer
+  moderator
+}
+
+enum Types {
+  trust
+  society
+  section8
+}
+
+enum RequestType {
+  volunteer
+  ngo
+}
+
+enum ApprovalStatus {
+  pending
+  approved
+  rejected
+  completed
+}
