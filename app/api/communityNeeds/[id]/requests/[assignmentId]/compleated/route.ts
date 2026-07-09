@@ -1,7 +1,7 @@
 import { NextRequest , NextResponse} from "next/server";
 import { getNgoFromToken } from "@/lib/ngo-auth";
 import {prisma} from "@/lib/prisma"
-
+import {Prisma} from "@prisma/client"
 export async function POST(req:NextRequest , context : {params : Promise<{id:string ; assignmentId : string }>}){
         try{
                 const {id , assignmentId} = await context.params;    
@@ -52,7 +52,7 @@ export async function POST(req:NextRequest , context : {params : Promise<{id:str
                 }
             // Something new interective callback feature of prisma   detail me padh na 
             // tx is client instance bound to transaction   queries run sequentially  each is send to DB with same Transection 
-                await prisma.$transaction(async (tx) => {
+                await prisma.$transaction(async (tx : Prisma.TransactionClient) => {
                         let avgRating = 0;
                         let ratingCount = 0;
                         if (rating !== undefined) {
