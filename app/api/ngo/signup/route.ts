@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
         10
       );
 
-      const ngo = await prisma.$transaction(async (tx) => {
+      const ngo = await prisma.$transaction(async (tx : any) => {
         await tx.ngo.delete({
           where: {
             id: existingNgo.id,
