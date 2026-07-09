@@ -19,7 +19,7 @@ export async function GET(req: NextRequest, context: {params: Promise<{id: strin
         }
         const voulenteers = await prisma.taskAssignment.findMany({
             where : {
-                id : needId , 
+                needId : needId , 
                 approvalStatus : "completed" ,
             },
             include : {
