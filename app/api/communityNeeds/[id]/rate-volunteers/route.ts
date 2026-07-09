@@ -1,6 +1,7 @@
 import {NextResponse, NextRequest} from 'next/server';
 import {getNgoFromToken} from '@/lib/ngo-auth';
 import {prisma} from '@/lib/prisma';
+import { Prisma } from "@prisma/client";
 
 export async function GET(req: NextRequest, context: {params: Promise<{id: string}>}) {
     try{
@@ -98,7 +99,7 @@ export async function POST(req: NextRequest,context: {params: Promise<{id: strin
       );
     }
     await prisma.$transaction(
-      async (tx) => {
+      async (tx : Prisma.TransactionClient ) => {
         for (const item of ratings) {
           const {assignmentId,rating} = item;
           if ( rating !== undefined && (typeof rating !=="number" ||rating < 1 ||rating > 5)) {
