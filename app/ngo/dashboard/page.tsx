@@ -20,10 +20,18 @@ async function fetchJson(path: string) {
     cache: "no-store",
   });
 
-  if (!res.ok) return null;
-  return res.json();
-}
+  const text = await res.text();
 
+  console.log("PATH:", path);
+  console.log("STATUS:", res.status);
+  console.log("BODY:", text.substring(0, 200));
+
+  if (!res.ok) {
+    return null;
+  }
+
+  return JSON.parse(text);
+}
 export default async function NgoDashboardPage() {
   const [ngoRes, dashboardRes] = await Promise.all([
     fetchJson("/api/ngo/me"),
