@@ -3,7 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const ngoAccessToken = req.cookies.get("ngo_access_token")?.value;
-  const userSession =req.cookies.get("better-auth.session_token")?.value;
+  const userSession =
+  req.cookies.get("__Secure-better-auth.session_token")?.value ??
+  req.cookies.get("better-auth.session_token")?.value;
   
   if (pathname.startsWith("/ngo/")) {
     if (!ngoAccessToken) {
@@ -35,7 +37,7 @@ export async function proxy(req: NextRequest) {
   }
   if (pathname === "/login" && userSession) {
     return NextResponse.redirect(
-      new URL("user/profilePage", req.url)
+      new URL("/user/profilePage", req.url)
     );
   }
 
