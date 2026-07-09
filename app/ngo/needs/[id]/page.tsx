@@ -1,5 +1,4 @@
 // app/ngo/needs/[id]/requests/page.tsx
-'use client';
 import { cookies } from "next/headers";
 import RequestsClient from "@/app/ngo/needs/[id]/RequestsClient";
 import type { RequestItem } from "@/app/ngo/needs/RequestItem"
