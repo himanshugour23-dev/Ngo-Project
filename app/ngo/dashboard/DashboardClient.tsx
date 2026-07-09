@@ -92,7 +92,7 @@ export default function DashboardClient({ngo,dashboard,}: {
       key: "active",
       label: "Active needs",
       value: dashboard.activeNeeds,
-      href: "/ngo/needs?status=active",
+      href: "/ngo/my-needs",
       icon: <AlertTriangle className="h-4 w-4 sm:h-5 sm:w-5" />,
       accentBg: "bg-[#fde8e8]",
       accentText: "text-[#8b1c1c]",
@@ -146,7 +146,7 @@ export default function DashboardClient({ngo,dashboard,}: {
 
   return (
     <div className="min-h-screen bg-[#faf8f4] font-['Nunito',sans-serif] text-[#1c2b1e]">
-      {/* ── Top bar ── */}
+
       <div className="border-b border-[#ece8e0] bg-white px-4 sm:px-10 py-3.5 sm:py-5">
         <div className="max-w-[1280px] mx-auto flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
