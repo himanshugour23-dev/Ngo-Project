@@ -1,19 +1,7 @@
-// app/ngo/needs/[id]/requests/RequestsClient.tsx
 "use client";
 
 import { useState } from "react";
-import {
-  Star,
-  MapPin,
-  Briefcase,
-  CheckCircle2,
-  XCircle,
-  Loader2,
-  Inbox,
-  AlertTriangle,
-  Mail,
-  Tag,
-} from "lucide-react";
+import {Star,MapPin,Briefcase,CheckCircle2,XCircle,Loader2,Inbox,AlertTriangle,Mail,Tag,} from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -21,28 +9,16 @@ import NgoTopBar from "@/components/NgoTopBar";
 import type { RequestItem } from "@/app/ngo/needs/RequestItem";
 
 type ActionState = "idle" | "loading" | "error";
-
 function initialsOf(name: string) {
-  return (
-    name
-      ?.split(" ")
-      .slice(0, 2)
-      .map((w) => w[0])
-      .join("")
-      .toUpperCase() || "U"
-  );
+  return (name?.split(" ").slice(0, 2).map((w) => w[0]).join("").toUpperCase() || "U");
 }
 
-function RequestCard({
-  request,
-  onResolve,
-}: {
+function RequestCard({request,onResolve,}: {
   request: RequestItem;
   onResolve: (assignmentId: string, status: "approved" | "rejected") => Promise<boolean>;
 }) {
   const [action, setAction] = useState<"approve" | "reject" | null>(null);
   const [state, setState] = useState<ActionState>("idle");
-
   const u = request.user;
   const skills = u.skills ?? [];
   const categories = u.preferredCategories ?? [];
@@ -55,7 +31,6 @@ function RequestCard({
     if (!ok) {
       setState("error");
     }
-    // on success, the card is removed by the parent — no need to reset state
   }
 
   return (
@@ -164,12 +139,7 @@ function RequestCard({
   );
 }
 
-export default function RequestsClient({
-  needId,
-  initialRequests,
-  ngo,
-  fetchFailed,
-}: {
+export default function RequestsClient({needId,initialRequests,ngo,fetchFailed,}: {
   needId: string;
   initialRequests: RequestItem[];
   ngo?: {

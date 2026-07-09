@@ -4,19 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
-import {
-  AlertTriangle,
-  CheckCircle2,
-  Clock,
-  Users,
-  ArrowUpRight,
-  MapPin,
-  Calendar,
-  Sparkles,
-  Plus,
-  Building2,
-  LogOut,
-  Loader2,
+import {AlertTriangle,CheckCircle2,Clock,Users,ArrowUpRight,MapPin,Calendar,Sparkles,Plus,Building2,LogOut,Loader2,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -41,16 +29,11 @@ type Dashboard = {
   volunteersWorking: number;
 };
 
-export default function DashboardClient({
-  ngo,
-  dashboard,
-}: {
+export default function DashboardClient({ngo,dashboard,}: {
   ngo: Ngo;
-  dashboard: Dashboard;
-}) {
+  dashboard: Dashboard; }) {
   const router = useRouter();
   const [loggingOut, setLoggingOut] = useState(false);
-
   const initials =
     ngo?.ngoName
       ?.split(" ")
@@ -63,8 +46,6 @@ export default function DashboardClient({
   const completionRate =
     totalNeeds > 0 ? Math.round((dashboard.completedNeeds / totalNeeds) * 100) : 0;
 
-  // Quick read on profile completeness, used to fill out the laptop layout
-  // with something genuinely useful rather than empty space.
   const profileFields: [string, unknown][] = [
     ["name", ngo?.ngoName],
     ["city", ngo?.city],
@@ -221,7 +202,7 @@ export default function DashboardClient({
       </div>
 
       <main className="max-w-[1280px] mx-auto px-4 sm:px-10 py-6 sm:py-10">
-        {/* ── Greeting ── */}
+
         <div className="mb-5 sm:mb-9">
           <div className="text-[0.68rem] sm:text-xs font-bold tracking-[0.1em] text-[#d4890a] uppercase mb-1.5 sm:mb-2">
             Dashboard
@@ -234,7 +215,6 @@ export default function DashboardClient({
           </p>
         </div>
 
-        {/* ── Stat cards ── */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 mb-6 sm:mb-10">
           {cards.map((c) => (
             <Card
@@ -286,9 +266,7 @@ export default function DashboardClient({
           ))}
         </div>
 
-        {/* ── Lower section: profile + quick actions + snapshot ── */}
         <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_0.85fr_0.85fr] gap-4 sm:gap-6">
-          {/* NGO profile card */}
           <Card className="border border-[#ece8e0] rounded-2xl p-5 sm:p-7 bg-white">
             <div className="flex items-center justify-between mb-4 sm:mb-5">
               <div className="flex items-center gap-2">
@@ -380,7 +358,7 @@ export default function DashboardClient({
             </div>
           </Card>
 
-          {/* Quick actions */}
+          
           <Card className="border border-[#ece8e0] rounded-2xl p-5 sm:p-7 bg-white">
             <div className="text-xs font-bold tracking-[0.1em] text-[#d4890a] uppercase mb-4 sm:mb-5">
               Quick actions
@@ -436,8 +414,6 @@ export default function DashboardClient({
               </Link>
             </div>
           </Card>
-
-          {/* Snapshot — fills the third column on wide screens */}
           <Card className="border border-[#ece8e0] rounded-2xl p-5 sm:p-7 bg-white flex flex-col">
             <div className="text-xs font-bold tracking-[0.1em] text-[#d4890a] uppercase mb-4 sm:mb-5">
               Snapshot
@@ -463,7 +439,6 @@ export default function DashboardClient({
                 </div>
                 <Separator className="bg-[#ece8e0]" />
               </div>
-
               <div>
                 <div className="flex justify-between items-baseline mb-1.5">
                   <span className="text-sm text-[#6b7e6d]">Volunteers active now</span>
@@ -473,7 +448,6 @@ export default function DashboardClient({
                 </div>
               </div>
             </div>
-
             <div className="mt-auto pt-5">
               <div className="rounded-xl bg-[#fff4e0] px-4 py-3.5">
                 <p className="text-[0.78rem] text-[#7a4800] leading-[1.55]">

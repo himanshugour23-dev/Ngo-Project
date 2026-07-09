@@ -5,7 +5,6 @@ import DashboardClient from "./DashboardClient";
 export const dynamic = "force-dynamic";
 
 async function getBaseUrl() {
-  // Works in most Next.js hosting setups (Vercel sets VERCEL_URL).
   if (process.env.NEXT_PUBLIC_BASE_URL) return process.env.NEXT_PUBLIC_BASE_URL;
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
   return "http://localhost:3000";

@@ -1,26 +1,15 @@
 // app/ngo/my-needs/MyNeedsClient.tsx
 "use client";
-
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  MapPin,
-  Calendar,
-  Users,
-  ArrowUpRight,
-  Inbox,
-  ImageOff,
-} from "lucide-react";
+import {MapPin,Calendar,Users,ArrowUpRight,Inbox,ImageOff} from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import NgoTopBar from "@/components/NgoTopBar";
 import type { NeedItem } from "@/app/ngo/my-needs/types";
 
-const URGENCY: Record<
-  string,
-  { label: string; bg: string; text: string; dot: string; bar: string }
-> = {
+const URGENCY: Record<string,{ label: string; bg: string; text: string; dot: string; bar: string }> = {
   HIGH: {
     label: "High urgency",
     bg: "bg-[#fde8e8]",
@@ -66,9 +55,7 @@ function formatDeadline(d: string | null) {
 function NeedCard({ need }: { need: NeedItem }) {
   const u = urgencyStyle(need.urgencyLevel);
   const pct =
-    need.maxVolunteers > 0
-      ? Math.min(100, Math.round((need.voulenteersWorking / need.maxVolunteers) * 100))
-      : 0;
+    need.maxVolunteers > 0 ? Math.min(100, Math.round((need.voulenteersWorking / need.maxVolunteers) * 100)) : 0;
   const spotsLeft = Math.max(0, need.maxVolunteers - need.voulenteersWorking);
   const cover = need.images?.[0];
 
@@ -143,11 +130,7 @@ function EmptyState({ label }: { label: string }) {
   );
 }
 
-export default function MyNeedsClient({
-  activeNeeds,
-  completedNeeds,
-  ngo,
-}: {
+export default function MyNeedsClient({activeNeeds,completedNeeds,ngo,}: {
   activeNeeds: NeedItem[];
   completedNeeds: NeedItem[];
   ngo?: {
@@ -184,7 +167,6 @@ console.log(activeNeeds);
           </p>
         </div>
 
-        {/* Tabs */}
         <div className="inline-flex bg-white border border-[#ece8e0] rounded-xl p-1 mb-6 sm:mb-8">
           <button
             onClick={() => setTab("active")}
