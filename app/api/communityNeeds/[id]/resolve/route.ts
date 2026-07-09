@@ -16,7 +16,7 @@ export async function POST(req:NextRequest , context : {params : Promise<{id:str
         if(need.ngoId !== ngo.ngoId){
             return NextResponse.json({message : "Forbidden"} , {status : 401})
         }
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx:any) => {
         const approvedAssignments =
             await tx.taskAssignment.findMany({
                 where: {
