@@ -1,4 +1,3 @@
-// app/ngo/my-needs/MyNeedsClient.tsx
 "use client";
 import { useState } from "react";
 import Link from "next/link";
@@ -60,7 +59,7 @@ function NeedCard({ need }: { need: NeedItem }) {
   const cover = need.images?.[0];
 
   return (
-    <Link href={`/ngo/needs/${need.id}/requests`} className="block no-underline group">
+   
       <Card className="border border-[#ece8e0] rounded-2xl overflow-hidden bg-white hover:shadow-[0_12px_30px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-200 h-full">
         <div className="h-[150px] sm:h-[158px] relative bg-[#f4f1ea]">
           {cover ? (
@@ -107,15 +106,23 @@ function NeedCard({ need }: { need: NeedItem }) {
             <div className={`h-full rounded-full ${u.bar}`} style={{ width: `${pct}%` }} />
           </div>
 
-          <div className="flex items-center justify-between">
-            <span className="text-[0.78rem] font-bold text-[#2d6a4f] flex items-center gap-1.5 group-hover:gap-2 transition-all">
-              View pending requests
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </span>
-          </div>
+          <div className="flex flex-col gap-2">
+
+  <Link
+    href={`/ngo/needs/${need.id}/requests`}
+    className="w-full rounded-xl bg-[#2d6a4f] text-white text-sm font-semibold py-2.5 flex items-center justify-center gap-2 hover:bg-[#245a43] transition">
+    View Pending Requests
+    <ArrowUpRight className="h-4 w-4" />
+  </Link>
+  <Link
+    href={`/ngo/needs/${need.id}/active-volunteers`}
+    className="w-full rounded-xl border border-[#2d6a4f] text-[#2d6a4f] text-sm font-semibold py-2.5 flex items-center justify-center gap-2 hover:bg-[#e8f5ee] transition">
+    View Active Volunteers
+    <ArrowUpRight className="h-4 w-4" />
+  </Link>
+</div>
         </div>
       </Card>
-    </Link>
   );
 }
 
@@ -189,7 +196,6 @@ console.log(activeNeeds);
             Completed ({completedNeeds.length})
           </button>
         </div>
-
         {list.length === 0 ? (
           <EmptyState
             label={
@@ -197,8 +203,7 @@ console.log(activeNeeds);
                 ? "No active needs yet. Post one to start receiving volunteers."
                 : "No completed needs yet."
             }
-          />
-        ) : (
+          />):(
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {list.map((n) => (
               <NeedCard key={n.id} need={n} />
