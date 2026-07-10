@@ -10,6 +10,7 @@ import HomeNav from "@/components/HomeNav";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import LoginStatusMessage from "./LoginStatusMessage";
+import { Suspense } from "react";
 export default function LoginPage() {
 const router = useRouter();
 const [password, setPassword] = useState("");
@@ -53,7 +54,6 @@ return (
       fontFamily: "'Nunito', sans-serif",
       }}
       >
-      {/* <HomeNav /> */}
       <HomeNav/>
 
   <div className="flex-1 flex justify-center items-center px-6">
@@ -92,7 +92,9 @@ return (
       </p>
 
       <div className="mt-5">
-        <LoginStatusMessage />
+        <Suspense fallback={null}>
+          <LoginStatusMessage />
+        </Suspense>
       </div>
 
       <form

@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import HomeNav from "@/components/HomeNav";
 import LoginStatusMessage from "./LoginStatusMessage";
+import { Suspense } from "react";
 export default function NgoLoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -99,8 +100,10 @@ console.log(data.isVerified);
           Sign in to your ngoSupport account as an Organisation
         </p>
           <div className="mt-5">
+          <Suspense fallback={null}>
             <LoginStatusMessage />
-          </div>
+          </Suspense>
+        </div>
         <form onSubmit={handleLogin} className="mt-8 space-y-4">
           <Input
             type="email"
