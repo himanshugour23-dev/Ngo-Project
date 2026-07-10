@@ -7,7 +7,6 @@ export async function GET(req: NextRequest) {
     const token = searchParams.get("token");
     const email = searchParams.get("email");
 
-    // Basic validation
     if (!token || !email) {
       return NextResponse.redirect(
         `${origin}/login?error=invalid_link`

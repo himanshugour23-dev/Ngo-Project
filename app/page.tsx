@@ -411,7 +411,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* ── Footer ── */}
       <footer className="bg-[#1a2c1e] px-5 sm:px-10 pt-12 sm:pt-[52px] pb-7">
         <div className="max-w-[1160px] mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr] gap-8 sm:gap-10 mb-10">

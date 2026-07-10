@@ -1,4 +1,3 @@
-// app/ngo/dashboard/page.tsx
 import { cookies } from "next/headers";
 import DashboardClient from "./DashboardClient";
 
@@ -21,15 +20,9 @@ async function fetchJson(path: string) {
   });
 
   const text = await res.text();
-
-  console.log("PATH:", path);
-  console.log("STATUS:", res.status);
-  console.log("BODY:", text.substring(0, 200));
-
   if (!res.ok) {
     return null;
   }
-
   return JSON.parse(text);
 }
 export default async function NgoDashboardPage() {

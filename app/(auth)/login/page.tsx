@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import HomeNav from "@/components/HomeNav";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import LoginStatusMessage from "./LoginStatusMessage";
 export default function LoginPage() {
 const router = useRouter();
 const [password, setPassword] = useState("");
@@ -87,12 +88,16 @@ return (
       </h1>
 
       <p className="mt-2 text-[#6b7e6d]">
-        Sign in to your ngoSupport account as Volunteer
+  Sign in to your ngoSupport account as Volunteer
       </p>
+
+      <div className="mt-5">
+        <LoginStatusMessage />
+      </div>
 
       <form
         onSubmit={handleLogin}
-        className="mt-8 space-y-4"
+        className="mt-6 space-y-4"
       >
         <Input
           type="email"

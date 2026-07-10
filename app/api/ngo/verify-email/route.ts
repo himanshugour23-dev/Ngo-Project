@@ -2,111 +2,85 @@ import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const token = searchParams.get("token");
-  if (!token) {
-    return NextResponse.redirect(
-      new URL("/ngo/verify-failed", req.url)
-    );
-  }
-  const verification = await prisma.verification.findFirst({
-    where: {
-      value: token,
-      identifier: {
-        startsWith: "ngo:",
+  try {
+    const { searchParams } = new URL(req.url);
+    const token = searchParams.get("token");
+    if (!token) {
+      return NextResponse.redirect(
+        new URL("/ngo-login?error=invalid_token", req.url)
+      );
+    }
+    const verification = await prisma.verification.findFirst({
+      where: {
+        value: token,
+        identifier: {
+          startsWith: "ngo:",
+        },
       },
-    },
-  });
-  if (!verification) {
-    return NextResponse.redirect(
-      new URL("/ngo/verify-failed", req.url)
-    );
-  }
-  if(verification.expiresAt < new Date()) {
-    await prisma.verification.deleteMany({
+    });
+
+    if (!verification) {
+      return NextResponse.redirect(
+        new URL("/ngo-login?error=invalid_token", req.url)
+      );
+    }
+
+    if (verification.expiresAt < new Date()) {
+      await prisma.verification.delete({
+        where: {
+          id: verification.id,
+        },
+      });
+      return NextResponse.redirect(
+        new URL("/ngo-login?error=token_expired", req.url)
+      );
+    }
+    const ngoId = verification.identifier.split(":")[1];
+    const ngo = await prisma.ngo.findUnique({
+      where: {
+        id: ngoId,
+      },
+    });
+    if (!ngo) {
+      await prisma.verification.delete({
+        where: {
+          id: verification.id,
+        },
+      });
+      return NextResponse.redirect(
+        new URL("/ngo-login?error=user_not_found", req.url)
+      );
+    }
+    if (ngo.isEmailVerified) {
+      await prisma.verification.delete({
+        where: {
+          id: verification.id,
+        },
+      });
+      return NextResponse.redirect(
+        new URL("/ngo-login?message=already_verified", req.url)
+      );
+    }
+    await prisma.ngo.update({
+      where: {
+        id: ngoId,
+      },
+      data: {
+        isEmailVerified: true,
+      },
+    });
+    await prisma.verification.delete({
       where: {
         id: verification.id,
       },
     });
     return NextResponse.redirect(
-      new URL("/ngo/verify-failed", req.url)
+      new URL("/ngo-login?message=email_verified", req.url)
+    );
+  } catch (error) {
+    console.error("NGO Email Verification Error:", error);
+    return NextResponse.redirect(
+      new URL("/ngo-login?error=server_error", req.url)
     );
   }
-  await prisma.ngo.update({
-    where: {
-      id : verification.identifier.split(":")[1],
-    },
-    data: {
-      isEmailVerified: true,
-    },
-  });
-  await prisma.verification.delete({
-    where: {
-      id: verification.id,
-    },
-  });
-  return NextResponse.redirect(
-    new URL("/ngo/email-verified", req.url)
-  );
 }
-
-// import {prisma} from "@/lib/prisma"
-// import { NextRequest , NextResponse} from "next/server";
-// export async function GET(req: NextRequest){
-//     try{
-//         const {searchParams} = new URL(req.url);
-//         const token = searchParams.get("token")
-//         const newEmail = searchParams.get("email") ; 
-//          if(!newEmail){return NextResponse.redirect(new URL("/profile?error=invalid_token",req.url));}
-//          if (!token) {return NextResponse.redirect(new URL("/profile?error=invalid_token",req.url));}
-//         const verification = await prisma.verification.findFirst({
-//             where : {
-//                 value : token,
-//                 identifier : {
-//                     startsWith : "change-email:",
-//                 }
-//             }
-//         })
-//         if(!verification){
-//             return NextResponse.redirect(new URL("/profile?error=invalid_token",req.url));
-//         }
-//         if(verification.expiresAt < new Date()){
-//               await prisma.verification.deleteMany({
-//                 where : { 
-//                     id : verification.id
-//                 }
-//               })
-//             return NextResponse.redirect(new URL("/profile?error=expired_token",req.url));
-//         }
-
-//         const  parts = verification.identifier.split(":");
-//         const userId = parts[1];
-//         const verifiedEmail = parts[2];
-//         await prisma.user.update({
-//                where : {
-//                 id : userId
-//                },
-//                data : { 
-//                 email : verifiedEmail, 
-//                 emailVerified : true
-//                }
-//         })
-         
-//         await prisma.session.deleteMany({
-//             where: {
-//                 userId,
-//             },
-//         });
-
-//         await prisma.verification.delete({
-//             where: {
-//                 id: verification.id,
-//             },
-//         });
-//             return NextResponse.redirect(new URL("/login",req.url));
-//     }
-//     catch(err){
-//             console.log(err) ; 
-//             return NextResponse.json({error : "Something went wrong "} , {status : 500})
-//     }
-// }

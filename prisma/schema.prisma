@@ -47,7 +47,7 @@ model Account {
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  @@index([userId])                    // join from user → accounts
+  @@index([userId])                 
 }
 
 model Session {
@@ -140,9 +140,9 @@ model TaskAssignment {
   @@unique([needId, assignedToUserId])
   ratingFromAssignment VolunteerRating?
   @@index([assignedToUserId])         
-@@index([needId])                    
-@@index([approvalStatus])     
-@@index([assignedToUserId, approvalStatus])  
+  @@index([needId])                    
+  @@index([approvalStatus])     
+  @@index([assignedToUserId, approvalStatus])  
 }
 
 model VolunteerRating{

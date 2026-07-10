@@ -121,8 +121,6 @@ export default function HomeNav() {
         <Dropdown label="Get started" solid items={GETSTARTED_ITEMS} />
       </div>
 
-
-      {/* mobile: backdrop + slide-in drawer from the right */}
       <div
         onClick={() => setMobileOpen(false)}
         aria-hidden="true"

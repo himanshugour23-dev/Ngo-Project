@@ -1,23 +1,9 @@
-// app/needs/[id]/NeedDetailClient.tsx
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  MapPin,
-  Users,
-  Calendar,
-  Clock,
-  ChevronLeft,
-  ChevronRight,
-  CheckCircle2,
-  AlertTriangle,
-  ImageOff,
-  ArrowLeft,
-  Loader2,
-  Building2,
-  Activity,
+import {MapPin,Users,Calendar,Clock,ChevronLeft,ChevronRight,CheckCircle2,AlertTriangle,ImageOff,ArrowLeft,Loader2,Building2,Activity,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -51,13 +37,13 @@ function formatDate(d: string | null) {
   });
 }
 
-// ── Full-screen style image slider (YouTube community post feel) ──────────
 function ImageSlider({ images }: { images: string[] }) {
   const [idx, setIdx] = useState(0);
   const [dragging, setDragging] = useState(false);
   const [dragStart, setDragStart] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
-
+  const [state, setState] = useState<"idle" | "loading" | "success" | "error" | "already">("idle");
+  const [msg, setMsg] = useState("");
   const prev = useCallback(() => setIdx((i) => (i - 1 + images.length) % images.length), [images.length]);
   const next = useCallback(() => setIdx((i) => (i + 1) % images.length), [images.length]);
 
@@ -197,9 +183,28 @@ function ImageSlider({ images }: { images: string[] }) {
 function ApplyButton({ needId }: { needId: string }) {
   const [state, setState] = useState<"idle" | "loading" | "success" | "error" | "already">("idle");
   const [msg, setMsg] = useState("");
-
+  useEffect(() => {
+  async function checkApplicationStatus() {
+    try {
+      const res = await fetch(`/api/communityNeeds/${needId}/apply-status`, {
+        cache: "no-store",
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data.alreadyApplied) {
+        setState("already");
+        setMsg(data.message);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  checkApplicationStatus();
+}, [needId]);
   async function handleApply() {
-    if (state === "loading" || state === "success") return;
+  if (state === "loading" ||state === "success" ||state === "already") {
+    return;
+  }
     setState("loading");
     setMsg("");
 
@@ -269,12 +274,7 @@ function ApplyButton({ needId }: { needId: string }) {
 }
 
 // ── Stat row helper ───────────────────────────────────────────────────────
-function StatRow({
-  icon,
-  label,
-  value,
-  valueClass = "text-[#1c2b1e]",
-}: {
+function StatRow({icon,label,value,valueClass = "text-[#1c2b1e]",}: {
   icon: React.ReactNode;
   label: string;
   value: string | React.ReactNode;

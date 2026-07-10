@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import HomeNav from "@/components/HomeNav";
-
+import LoginStatusMessage from "./LoginStatusMessage";
 export default function NgoLoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -31,24 +31,14 @@ export default function NgoLoginPage() {
 const data = await res.json();
 console.log("Response:", data);
 if (!res.ok) {
-  if (
-    res.status === 401 &&
-    data.error ===
-      "First Logout as user to login as NGO"
+  if ( res.status === 401 && data.error === "First Logout as user to login as NGO"
   ) {
     toast.error(data.error);
-
     router.push("/profilePage");
-
     return;
   }
 
-  toast.error(
-    data.error ||
-    data.message ||
-    "Login failed"
-  );
-
+  toast.error(data.error || data.message ||"Login failed");
   return;
 }
 toast.success("Logged in successfully!");
@@ -56,9 +46,7 @@ console.log("Before redirect");
 console.log(data.isVerified);
       if (!data.isVerified) {
         router.push("/ngo/verify-pending");
-
       }
-       
       else {
         router.push("/ngo/dashboard");
       }
@@ -78,7 +66,6 @@ console.log(data.isVerified);
       <HomeNav/>
       <div className="w-full max-w-md">
 
-        {/* Logo */}
         <div className="flex items-center gap-2 mb-8">
           <div
             className="w-9 h-9 rounded-xl flex items-center justify-center"
@@ -111,7 +98,9 @@ console.log(data.isVerified);
         <p className="mt-2 text-[#6b7e6d]">
           Sign in to your ngoSupport account as an Organisation
         </p>
-
+          <div className="mt-5">
+            <LoginStatusMessage />
+          </div>
         <form onSubmit={handleLogin} className="mt-8 space-y-4">
           <Input
             type="email"
@@ -154,7 +143,6 @@ console.log(data.isVerified);
           </Button>
         </form>
 
-        {/* isVerified warning */}
         <p className="text-xs text-center mt-4 text-[#6b7e6d]">
           New NGO accounts require admin verification before access is granted.
         </p>
