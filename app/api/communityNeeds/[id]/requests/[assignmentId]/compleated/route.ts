@@ -109,7 +109,7 @@ export async function POST(req:NextRequest , context : {params : Promise<{id:str
                                 completedAt: new Date(),
                             },
                         });
-
+                        if(need.voulenteersWorking > 0){
                         await tx.communityNeeds.update({
                             where: {
                                 id,
@@ -120,7 +120,7 @@ export async function POST(req:NextRequest , context : {params : Promise<{id:str
                                 },
                             },
                         });
-
+                    }
                         await tx.user.update({
                             where: {
                                 id: assignment.assignedToUserId,
