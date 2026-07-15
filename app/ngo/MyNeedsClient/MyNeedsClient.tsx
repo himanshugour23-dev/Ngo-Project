@@ -1,13 +1,18 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import {MapPin,Calendar,Users,ArrowUpRight,Inbox,ImageOff} from "lucide-react";
+import {MapPin,Calendar,Users,ArrowUpRight,Inbox,ImageOff,CheckCircle2,Loader2} from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import NgoTopBar from "@/components/NgoTopBar";
 import type { NeedItem } from "@/app/ngo/my-needs/types";
-
+import {AlertDialog,AlertDialogAction,AlertDialogCancel,AlertDialogContent,
+  AlertDialogDescription,AlertDialogFooter,AlertDialogHeader,AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 const URGENCY: Record<string,{ label: string; bg: string; text: string; dot: string; bar: string }> = {
   HIGH: {
     label: "High urgency",
@@ -51,15 +56,27 @@ function formatDeadline(d: string | null) {
   }
 }
 
-function NeedCard({ need }: { need: NeedItem }) {
+function NeedCard({ need, isActive }: { need: NeedItem; isActive: boolean }) {
+  const router = useRouter();
+  const [completing, setCompleting] = useState(false);
   const u = urgencyStyle(need.urgencyLevel);
   const pct =
     need.maxVolunteers > 0 ? Math.min(100, Math.round((need.voulenteersWorking / need.maxVolunteers) * 100)) : 0;
   const spotsLeft = Math.max(0, need.maxVolunteers - need.voulenteersWorking);
   const cover = need.images?.[0];
 
+  async function handleMarkCompleted() {
+    setCompleting(true);
+    try {
+      const res = await fetch(`/api/communityNeeds/${need.id}/resolve`, { method: "POST" });
+      if (!res.ok) throw new Error("Failed to resolve need");
+      router.push(`/ngo/needs/${need.id}/rate-volunteers`);
+    } catch (err) {
+      console.error(err);
+      setCompleting(false);
+    }
+  }
   return (
-   
       <Card className="border border-[#ece8e0] rounded-2xl overflow-hidden bg-white hover:shadow-[0_12px_30px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-200 h-full">
         <div className="h-[150px] sm:h-[158px] relative bg-[#f4f1ea]">
           {cover ? (
@@ -120,6 +137,40 @@ function NeedCard({ need }: { need: NeedItem }) {
     View Active Volunteers
     <ArrowUpRight className="h-4 w-4" />
   </Link>
+
+  {isActive && (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button
+          variant="outline"
+          className="w-full rounded-xl border-[#d4890a] text-[#d4890a] text-sm font-semibold py-2.5 hover:bg-[#fff4e0] hover:text-[#d4890a]"
+        >
+          <CheckCircle2 className="h-4 w-4 mr-2" />
+          Mark as Completed
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent className="bg-white border-[#ece8e0]">
+        <AlertDialogHeader>
+          <AlertDialogTitle className="text-[#1c2b1e]">Mark this need as completed?</AlertDialogTitle>
+          <AlertDialogDescription className="text-[#6b7e6d]">
+            All approved volunteers will be marked complete and this need will stop accepting invites.
+            You&apos;ll be taken to the rating page next.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction
+            onClick={handleMarkCompleted}
+            disabled={completing}
+            className="bg-[#2d6a4f] hover:bg-[#245a43]"
+          >
+            {completing ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+            Confirm
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  )}
 </div>
         </div>
       </Card>
@@ -206,7 +257,7 @@ console.log(activeNeeds);
           />):(
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {list.map((n) => (
-              <NeedCard key={n.id} need={n} />
+              <NeedCard key={n.id} need={n} isActive={tab === "active"} />
             ))}
           </div>
         )}
