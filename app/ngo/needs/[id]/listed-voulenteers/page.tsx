@@ -1,14 +1,16 @@
 import { cookies } from "next/headers";
-import ActiveVolunteersClient from "@/app/ngo/needs/[id]/active-volunteers/ActiveVoulenteersClient";
+import ListedVoulenteersClient from "@/app/ngo/needs/[id]/listed-voulenteers/ListedVoulenteersClient";
 
 export const dynamic = "force-dynamic";
 
 async function getBaseUrl() {
-  if (process.env.NEXT_PUBLIC_BASE_URL)
+  if (process.env.NEXT_PUBLIC_BASE_URL) {
     return process.env.NEXT_PUBLIC_BASE_URL;
+  }
 
-  if (process.env.VERCEL_URL)
+  if (process.env.VERCEL_URL) {
     return `https://${process.env.VERCEL_URL}`;
+  }
 
   return "http://localhost:3000";
 }
@@ -24,12 +26,14 @@ async function fetchJson(path: string) {
     cache: "no-store",
   });
 
-  if (!res.ok) return null;
+  if (!res.ok) {
+    return null;
+  }
 
   return res.json();
 }
 
-export default async function ActiveVolunteersPage({
+export default async function ListedVoulenteersPage({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -37,7 +41,7 @@ export default async function ActiveVolunteersPage({
   const { id } = await params;
 
   const [volunteersData, ngoData] = await Promise.all([
-    fetchJson(`/api/communityNeeds/${id}/active-voulenteer`),
+    fetchJson(`/api/communityNeeds/${id}/listed-voulenteer`),
     fetchJson("/api/ngo/me"),
   ]);
 
@@ -45,7 +49,7 @@ export default async function ActiveVolunteersPage({
   const ngo = ngoData?.ngo ?? null;
 
   return (
-    <ActiveVolunteersClient
+    <ListedVoulenteersClient
       needId={id}
       volunteers={volunteers}
       ngo={ngo}

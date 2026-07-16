@@ -28,13 +28,21 @@ export async function proxy(req: NextRequest) {
           );
       }
   }
+
   if (pathname.startsWith("/user")) {
-    if (!userSession) {
-      return NextResponse.redirect(
-        new URL("/login", req.url)
-      );
-    }
+  if (!userSession && !ngoAccessToken) {
+    return NextResponse.redirect(
+      new URL("/login", req.url)
+    );
   }
+}
+  // if (pathname.startsWith("/user")) {
+  //   if (!userSession) {
+  //     return NextResponse.redirect(
+  //       new URL("/login", req.url)
+  //     );
+  //   }
+  // }
   if (pathname === "/login" && userSession) {
     return NextResponse.redirect(
       new URL("/user/profilePage", req.url)

@@ -123,53 +123,73 @@ function NeedCard({ need, isActive }: { need: NeedItem; isActive: boolean }) {
             <div className={`h-full rounded-full ${u.bar}`} style={{ width: `${pct}%` }} />
           </div>
 
-          <div className="flex flex-col gap-2">
+       <div className="flex flex-col gap-2">
+  {isActive ? (
+    <>
+      <Link
+        href={`/ngo/needs/${need.id}/requests`}
+        className="w-full rounded-xl bg-[#2d6a4f] text-white text-sm font-semibold py-2.5 flex items-center justify-center gap-2 hover:bg-[#245a43] transition"
+      >
+        View Pending Requests
+        <ArrowUpRight className="h-4 w-4" />
+      </Link>
 
-  <Link
-    href={`/ngo/needs/${need.id}/requests`}
-    className="w-full rounded-xl bg-[#2d6a4f] text-white text-sm font-semibold py-2.5 flex items-center justify-center gap-2 hover:bg-[#245a43] transition">
-    View Pending Requests
-    <ArrowUpRight className="h-4 w-4" />
-  </Link>
-  <Link
-    href={`/ngo/needs/${need.id}/active-volunteers`}
-    className="w-full rounded-xl border border-[#2d6a4f] text-[#2d6a4f] text-sm font-semibold py-2.5 flex items-center justify-center gap-2 hover:bg-[#e8f5ee] transition">
-    View Active Volunteers
-    <ArrowUpRight className="h-4 w-4" />
-  </Link>
+      <Link
+        href={`/ngo/needs/${need.id}/active-volunteers`}
+        className="w-full rounded-xl border border-[#2d6a4f] text-[#2d6a4f] text-sm font-semibold py-2.5 flex items-center justify-center gap-2 hover:bg-[#e8f5ee] transition"
+      >
+        View Active Volunteers
+        <ArrowUpRight className="h-4 w-4" />
+      </Link>
 
-  {isActive && (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button
-          variant="outline"
-          className="w-full rounded-xl border-[#d4890a] text-[#d4890a] text-sm font-semibold py-2.5 hover:bg-[#fff4e0] hover:text-[#d4890a]"
-        >
-          <CheckCircle2 className="h-4 w-4 mr-2" />
-          Mark as Completed
-        </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent className="bg-white border-[#ece8e0]">
-        <AlertDialogHeader>
-          <AlertDialogTitle className="text-[#1c2b1e]">Mark this need as completed?</AlertDialogTitle>
-          <AlertDialogDescription className="text-[#6b7e6d]">
-            All approved volunteers will be marked complete and this need will stop accepting invites.
-            You&apos;ll be taken to the rating page next.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction
-            onClick={handleMarkCompleted}
-            disabled={completing}
-            className="bg-[#2d6a4f] hover:bg-[#245a43]"
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button
+            variant="outline"
+            className="w-full rounded-xl border-[#d4890a] text-[#d4890a] text-sm font-semibold py-2.5 hover:bg-[#fff4e0] hover:text-[#d4890a]"
           >
-            {completing ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
-            Confirm
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+            <CheckCircle2 className="h-4 w-4 mr-2" />
+            Mark as Completed
+          </Button>
+        </AlertDialogTrigger>
+
+        <AlertDialogContent className="bg-white border-[#ece8e0]">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-[#1c2b1e]">
+              Mark this need as completed?
+            </AlertDialogTitle>
+
+            <AlertDialogDescription className="text-[#6b7e6d]">
+              All approved volunteers will be marked complete and this need
+              will stop accepting invites. You&apos;ll be taken to the rating
+              page next.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleMarkCompleted}
+              disabled={completing}
+              className="bg-[#2d6a4f] hover:bg-[#245a43]"
+            >
+              {completing ? (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              ) : null}
+              Confirm
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
+  ) : (
+    <Link
+      href={`/ngo/needs/${need.id}/listed-voulenteers`}
+      className="w-full rounded-xl bg-[#2d6a4f] text-white text-sm font-semibold py-2.5 flex items-center justify-center gap-2 hover:bg-[#245a43] transition"
+    >
+      See Listed Volunteers
+      <ArrowUpRight className="h-4 w-4" />
+    </Link>
   )}
 </div>
         </div>

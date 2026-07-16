@@ -1,7 +1,8 @@
-// app/page.tsx
 import Image from "next/image";
 import Link from "next/link";
 import HomeNav from "@/components/HomeNav";
+import {UserPlus,Search,HeartHandshake,GraduationCap,Home as HomeIcon,Stethoscope,Users,Building2,
+} from "lucide-react";
 
 const NEEDS = [
   {
@@ -40,6 +41,8 @@ const STORIES = [
   {
     accent: "bg-[#e8f5ee]",
     textAccent: "text-[#1b5e38]",
+    iconColor: "text-[#2d6a4f]",
+    icon: GraduationCap,
     tag: "Education",
     title: "120 children received free coaching across 3 Indore slums",
     meta: "Gyan Jyoti NGO · 22 volunteers · 6 weeks",
@@ -47,6 +50,8 @@ const STORIES = [
   {
     accent: "bg-[#fff4e0]",
     textAccent: "text-[#7a4800]",
+    iconColor: "text-[#d4890a]",
+    icon: HomeIcon,
     tag: "Shelter",
     title: "450 displaced families given emergency ration kits within 72 hours",
     meta: "Jan Seva Samiti · 38 volunteers · Rapid response",
@@ -54,6 +59,8 @@ const STORIES = [
   {
     accent: "bg-[#fde8e8]",
     textAccent: "text-[#8b1c1c]",
+    iconColor: "text-[#c0392b]",
+    icon: Stethoscope,
     tag: "Healthcare",
     title: "Free health camp served 800 patients in a single day",
     meta: "Aarogya Trust · 41 volunteers · Indore camp",
@@ -66,18 +73,24 @@ const STEPS = [
     title: "Create your profile",
     desc: "Volunteers sign up with skills and availability. NGOs register with a certificate — verified by our team within 48 hours.",
     accent: "bg-[#e8f5ee]",
+    iconColor: "text-[#2d6a4f]",
+    icon: UserPlus,
   },
   {
     n: "02",
     title: "Discover real needs",
     desc: "NGOs post verified community needs with photos, location and an urgency score based on people affected and time sensitivity.",
     accent: "bg-[#fff4e0]",
+    iconColor: "text-[#d4890a]",
+    icon: Search,
   },
   {
     n: "03",
     title: "Help & track impact",
     desc: "Apply, get NGO approval, complete your task and watch your personal impact grow — people helped, hours contributed, certificates earned.",
     accent: "bg-[#fde8e8]",
+    iconColor: "text-[#c0392b]",
+    icon: HeartHandshake,
   },
 ];
 
@@ -91,6 +104,8 @@ const JOIN_CARDS = [
     perks: ["Free, no commitment required", "Matched by skill & location", "Earn a verifiable impact certificate"],
     perkColor: "text-[#1b5e38]",
     iconBg: "bg-[#c8e6d8]",
+    iconColor: "text-[#1b5e38]",
+    icon: Users,
     ctaBg: "bg-[#2d6a4f] hover:bg-[#1b4332]",
     ctaLabel: "Sign up as volunteer",
     ctaHref: "/signup",
@@ -108,6 +123,8 @@ const JOIN_CARDS = [
     perks: ["Admin-verified registration", "Smart urgency scoring system", "Accept or reject volunteer requests"],
     perkColor: "text-[#7a4800]",
     iconBg: "bg-[#f0d8a8]",
+    iconColor: "text-[#7a4800]",
+    icon: Building2,
     ctaBg: "bg-[#d4890a] hover:bg-[#a06000]",
     ctaLabel: "Register your NGO",
     ctaHref: "/ngo-signup",
@@ -151,7 +168,6 @@ export default function HomePage() {
     <div className="bg-[#faf8f4] font-['Nunito',sans-serif] text-[#1c2b1e]">
       <HomeNav />
 
-      {/* ── Hero ── */}
       <section className="max-w-[1160px] mx-auto px-5 sm:px-10 pt-[100px] sm:pt-[120px] lg:pt-[108px] pb-12 sm:pb-16 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-[60px] items-center">
         <div>
           <div className="inline-flex items-center gap-[7px] bg-[#e8f5ee] text-[#1b5e38] text-xs font-bold px-[13px] py-[5px] rounded-full mb-5 tracking-wide">
@@ -206,7 +222,6 @@ export default function HomePage() {
             />
           </div>
 
-          {/* Float card top-left */}
           <div className="absolute -top-4 -left-3 sm:-top-[18px] sm:-left-6 bg-white rounded-2xl border border-[#ece8e0] px-4 py-3.5 shadow-[0_8px_30px_rgba(0,0,0,0.07)] min-w-[150px] sm:min-w-[180px]">
             <div className="text-[0.62rem] sm:text-[0.68rem] font-bold uppercase tracking-wide text-[#8a9e8c] mb-2">
               Matched volunteers
@@ -226,7 +241,6 @@ export default function HomePage() {
             <div className="text-xs text-[#8a9e8c] mt-0.5">Flood relief · Ralamandal</div>
           </div>
 
-          {/* Float card bottom-right */}
           <div className="absolute bottom-4 -right-3 sm:bottom-6 sm:-right-[22px] bg-white rounded-2xl border border-[#ece8e0] px-4 py-3.5 shadow-[0_8px_30px_rgba(0,0,0,0.07)] min-w-[160px] sm:min-w-[190px]">
             <div className="inline-flex items-center gap-[5px] bg-[#fff3e0] text-[#7a4800] text-[0.68rem] font-bold px-2.5 py-[3px] rounded-xl mb-[7px]">
               <span className="w-1.5 h-1.5 bg-[#e07b00] rounded-full inline-block" />
@@ -238,7 +252,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── How it works ── */}
       <div id="how" className="bg-white px-5 sm:px-10 py-16 sm:py-20">
         <div className="max-w-[1160px] mx-auto">
           <div className="text-xs font-bold tracking-[0.1em] text-[#d4890a] uppercase mb-2.5">
@@ -253,7 +266,9 @@ export default function HomePage() {
                 <div className="font-['Playfair_Display',serif] text-[2.2rem] sm:text-[2.6rem] font-bold text-[#dde8de] leading-none mb-3">
                   {s.n}
                 </div>
-                <div className={`w-[42px] h-[42px] rounded-[11px] ${s.accent} mb-3.5`} />
+                <div className={`w-[42px] h-[42px] rounded-[11px] ${s.accent} mb-3.5 flex items-center justify-center`}>
+                  <s.icon className={`h-5 w-5 ${s.iconColor}`} />
+                </div>
                 <div className="text-[0.95rem] font-bold text-[#1c2b1e] mb-1.5">{s.title}</div>
                 <div className="text-[0.85rem] text-[#6b7e6d] leading-[1.65]">{s.desc}</div>
               </div>
@@ -262,7 +277,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* ── Active needs ── */}
       <div id="needs" className="bg-[#faf8f4] px-5 sm:px-10 py-16 sm:py-20">
         <div className="max-w-[1160px] mx-auto">
           <div className="flex justify-between items-end mb-7 sm:mb-9 flex-wrap gap-4">
@@ -312,8 +326,6 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-
-      {/* ── Impact ── */}
       <div id="impact" className="bg-white px-5 sm:px-10 py-16 sm:py-20">
         <div className="max-w-[1160px] mx-auto">
           <div className="text-xs font-bold tracking-[0.1em] text-[#d4890a] uppercase mb-2.5">
@@ -347,7 +359,9 @@ export default function HomePage() {
                   key={s.title}
                   className="bg-[#faf8f4] border border-[#ece8e0] rounded-xl px-[18px] py-4 flex gap-3 items-start"
                 >
-                  <div className={`w-[38px] h-[38px] rounded-[9px] shrink-0 ${s.accent}`} />
+                  <div className={`w-[38px] h-[38px] rounded-[9px] shrink-0 ${s.accent} flex items-center justify-center`}>
+                    <s.icon className={`h-[18px] w-[18px] ${s.iconColor}`} />
+                  </div>
                   <div>
                     <div className={`text-[0.68rem] font-bold uppercase tracking-wide mb-[3px] ${s.textAccent}`}>
                       {s.tag}
@@ -364,7 +378,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* ── Join ── */}
       <div id="join" className="bg-[#faf8f4] px-5 sm:px-10 py-16 sm:py-20">
         <div className="max-w-[900px] mx-auto text-center">
           <div className="text-xs font-bold tracking-[0.1em] text-[#d4890a] uppercase mb-2.5">
@@ -379,7 +392,9 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 text-left">
             {JOIN_CARDS.map((c) => (
               <div key={c.tag} className={`rounded-[22px] p-7 sm:p-9 ${c.bg} border ${c.border}`}>
-                <div className={`w-12 h-12 rounded-[13px] ${c.iconBg} mb-4.5`} />
+                <div className={`w-12 h-12 rounded-[13px] ${c.iconBg} mb-4.5 flex items-center justify-center`}>
+                  <c.icon className={`h-6 w-6 ${c.iconColor}`} />
+                </div>
                 <div className={`text-xs font-bold uppercase tracking-wide mb-2 ${c.tagColor}`}>{c.tag}</div>
                 <h3 className="font-['Playfair_Display',serif] text-[1.25rem] sm:text-[1.4rem] font-bold text-[#1c2b1e] mb-2.5">
                   {c.title}
