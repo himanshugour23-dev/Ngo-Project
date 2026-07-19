@@ -73,20 +73,7 @@ export default function DashboardClient({ngo,dashboard,}: {
     }
   }
 
-  const cards: {
-    key: string;
-    label: string;
-    value: number;
-    href: string;
-    icon: ReactNode;
-    accentBg: string;
-    accentText: string;
-    accentDot: string;
-    barBg: string;
-    description: string;
-    cta: string;
-    showBar?: boolean;
-    barPct?: number;
+  const cards: {key: string;label: string;value: number;href: string;icon: ReactNode;accentBg: string;accentText: string;accentDot: string;barBg: string;description: string;cta: string;showBar?: boolean;barPct?: number;
   }[] = [
     {
       key: "active",
@@ -116,7 +103,7 @@ export default function DashboardClient({ngo,dashboard,}: {
     },
     {
       key: "volunteers",
-      label: "Volunteers working",
+      label: "View volunteers which are Active",
       value: dashboard.volunteersWorking,
       href: "/ngo/volunteers",
       icon: <Users className="h-4 w-4 sm:h-5 sm:w-5" />,
@@ -124,7 +111,7 @@ export default function DashboardClient({ngo,dashboard,}: {
       accentText: "text-[#1c3f73]",
       accentDot: "bg-[#3568b8]",
       barBg: "bg-[#3568b8]",
-      description: "People currently assigned across your needs",
+      description: "see volunteers which are currently active and looking for work ",
       cta: "See volunteer roster",
     },
     {
@@ -395,7 +382,7 @@ export default function DashboardClient({ngo,dashboard,}: {
                     <div className="w-8 h-8 rounded-lg bg-[#e6f0fb] text-[#1c3f73] flex items-center justify-center">
                       <Users className="h-4 w-4" />
                     </div>
-                    <span className="text-sm font-bold text-[#1c2b1e]">View volunteer roster</span>
+                    <span className="text-sm font-bold text-[#1c2b1e]">View volunteers which are Active</span>
                   </div>
                   <ArrowUpRight className="h-4 w-4 text-[#c8d4ca]" />
                 </button>

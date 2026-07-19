@@ -109,6 +109,45 @@ export async function PATCH(req : NextRequest , context : { params : Promise<{ i
             }
         const validatedData = result.data;
         const {name, bio , skills , preferredCategories ,isActive } = validatedData ;
+        if (isActive === true) {
+            const user = await prisma.user.findUnique({
+                where: {
+                    id: userId,
+                },
+                select: {
+                    isBanned: true,
+                },
+            });
+            if (!user) {
+                return NextResponse.json(
+                    { error: "User not found" },
+                    { status: 404 }
+                );
+            }
+            if (user.isBanned) {
+                return NextResponse.json(
+                    { error: "Banned users cannot become active" },
+                    { status: 403 }
+                );
+            }
+            const activeAssignment = await prisma.taskAssignment.findFirst({
+                where: {
+                    assignedToUserId: userId,
+                    approvalStatus: "approved",
+                },
+                select: {
+                    assignmentId: true,
+                },
+            });
+            if (activeAssignment) {
+                return NextResponse.json(
+                    {
+                        error: "You cannot become active while working on an assigned task",
+                    },
+                    { status: 400 }
+                );
+            }
+        }
         await prisma.user.update({
             where : {
                 id : userId

@@ -60,7 +60,7 @@ model Session {
   userAgent    String?
   userId       String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  @@index([userId])                    // Better Auth looks up sessions by userId
+  @@index([userId])                   
 }
 
 model Verification {
